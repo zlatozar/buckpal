@@ -4,6 +4,6 @@ import io.reflectoring.buckpal.account.domain.Account;
 
 public interface UpdateAccountStatePort {
 
-	void updateActivities(Account account);
+    void updateActivities(Account account);
 
 }
