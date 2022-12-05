@@ -1,3 +1,3 @@
 ## Package content
 
-Convert HTTP to domain commands.
+Convert HTTP requests to domain commands.

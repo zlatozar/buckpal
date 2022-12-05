@@ -11,20 +11,20 @@ import io.reflectoring.buckpal.account.domain.Account.AccountId;
 import lombok.NonNull;
 
 /**
- * A window of account activities.
+ * A ledger of account activities.
  */
-public class ActivityWindow {
+public class ActivityLedger {
 
     /**
      * The list of account activities within this window.
      */
     private final List<Activity> activities;
 
-    public ActivityWindow(@NonNull List<Activity> activities) {
+    public ActivityLedger(@NonNull List<Activity> activities) {
         this.activities = activities;
     }
 
-    public ActivityWindow(@NonNull Activity... activities) {
+    public ActivityLedger(@NonNull Activity... activities) {
         this.activities = new ArrayList<>(Arrays.asList(activities));
     }
 

@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class SendMoneyController {
 
-    // Interface that represents 'send money' in domain logic.
+    // Interface that represents 'send money' command in domain logic.
     private final SendMoneyUseCase sendMoneyUseCase;
 
     @PostMapping(path = "/accounts/send/{sourceAccountId}/{targetAccountId}/{amount}")

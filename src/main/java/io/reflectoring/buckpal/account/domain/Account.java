@@ -1,7 +1,6 @@
 package io.reflectoring.buckpal.account.domain;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,35 +29,27 @@ public class Account {
     private final Money baselineBalance;
 
     /**
-     * The window of latest activities on this account.
+     * The window of the latest activities on this account.
      */
     @Getter
-    private final ActivityWindow activityWindow;
-
-    /**
-     * Creates an {@link Account} entity without an ID. Use to create a new entity that is not yet
-     * persisted.
-     */
-    public static Account withoutId(Money baselineBalance, ActivityWindow activityWindow) {
-        return new Account(null, baselineBalance, activityWindow);
-    }
+    private final ActivityLedger activityLedger;
 
     /**
      * Creates an {@link Account} entity with an ID. Use to reconstitute a persisted entity.
      */
-    public static Account withId(AccountId accountId, Money baselineBalance, ActivityWindow activityWindow) {
-        return new Account(accountId, baselineBalance, activityWindow);
+    public static Account withId(AccountId accountId, Money baselineBalance, ActivityLedger activityLedger) {
+        return new Account(accountId, baselineBalance, activityLedger);
     }
 
-    public Optional<AccountId> getId() {
-        return Optional.ofNullable(this.id);
+    public AccountId getId() {
+        return this.id;
     }
 
     /**
      * Calculates the total balance of the account by adding the activity values to the baseline balance.
      */
     public Money calculateBalance() {
-        return Money.add(this.baselineBalance, this.activityWindow.calculateBalance(this.id));
+        return Money.add(this.baselineBalance, this.activityLedger.calculateBalance(this.id));
     }
 
     /**
@@ -74,7 +65,7 @@ public class Account {
         }
 
         Activity withdrawal = new Activity(this.id, this.id, targetAccountId, LocalDateTime.now(), money);
-        this.activityWindow.addActivity(withdrawal);
+        this.activityLedger.addActivity(withdrawal);
 
         return true;
     }
@@ -87,7 +78,7 @@ public class Account {
      */
     public boolean deposit(Money money, AccountId sourceAccountId) {
         Activity deposit = new Activity(this.id, sourceAccountId, this.id, LocalDateTime.now(), money);
-        this.activityWindow.addActivity(deposit);
+        this.activityLedger.addActivity(deposit);
 
         return true;
     }

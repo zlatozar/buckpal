@@ -70,14 +70,14 @@ class SendMoneyServiceTest {
         Money money = Money.of(500L);
 
         SendMoneyCommand command =
-            new SendMoneyCommand(sourceAccount.getId().get(), targetAccount.getId().get(), money);
+            new SendMoneyCommand(sourceAccount.getId(), targetAccount.getId(), money);
 
         boolean success = sendMoneyService.sendMoney(command);
 
         assertThat(success).isTrue();
 
-        AccountId sourceAccountId = sourceAccount.getId().get();
-        AccountId targetAccountId = targetAccount.getId().get();
+        AccountId sourceAccountId = sourceAccount.getId();
+        AccountId targetAccountId = targetAccount.getId();
 
         then(accountLock).should().lockAccount(eq(sourceAccountId));
         then(sourceAccount).should().withdraw(eq(money), eq(targetAccountId));
@@ -98,7 +98,6 @@ class SendMoneyServiceTest {
 
         List<AccountId> updatedAccountIds = accountCaptor.getAllValues().stream()
             .map(Account::getId)
-            .map(Optional::get)
             .collect(Collectors.toList());
 
         for (AccountId accountId : accountIds) {
@@ -130,8 +129,8 @@ class SendMoneyServiceTest {
     private Account givenAnAccountWithId(AccountId id) {
         Account account = Mockito.mock(Account.class);
 
-        given(account.getId()).willReturn(Optional.of(id));
-        given(loadAccountPort.loadAccount(eq(account.getId().get()), any(LocalDateTime.class))).willReturn(account);
+        given(account.getId()).willReturn(id);
+        given(loadAccountPort.loadAccount(eq(account.getId()), any(LocalDateTime.class))).willReturn(account);
 
         return account;
     }

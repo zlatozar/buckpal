@@ -1,0 +1,14 @@
+<configuration>
+    <!-- if the system property LOCAL is defined, we'll use a human-friendly log format -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--pattern>%d{dd MMM HH:mm:ss} %gray([%thread]) [%highlight(%-5level)]: %F:%L | %m %n </pattern -->
+            <pattern>%cyan(%d{HH:mm:ss}) %highlight([%-5level]) %magenta(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="io.reflectoring" level="INFO" />
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

@@ -14,15 +14,15 @@ import org.springframework.test.context.jdbc.Sql;
 
 import io.reflectoring.buckpal.account.domain.Account;
 import io.reflectoring.buckpal.account.domain.Account.AccountId;
-import io.reflectoring.buckpal.account.domain.ActivityWindow;
+import io.reflectoring.buckpal.account.domain.ActivityLedger;
 import io.reflectoring.buckpal.account.domain.Money;
 
 @DataJpaTest
-@Import({ AccountPersistenceAdapter.class, AccountMapper.class })
-class AccountPersistenceAdapterTest {
+@Import({ AccountPersistence.class, AccountMapper.class })
+class AccountPersistenceTest {
 
     @Autowired
-    private AccountPersistenceAdapter adapterUnderTest;
+    private AccountPersistence adapterUnderTest;
 
     @Autowired
     private ActivityRepository activityRepository;
@@ -33,7 +33,7 @@ class AccountPersistenceAdapterTest {
         Account account = adapterUnderTest.loadAccount(new AccountId(1L),
             LocalDateTime.of(2018, 8, 10, 0, 0));
 
-        assertThat(account.getActivityWindow().getActivities()).hasSize(2);
+        assertThat(account.getActivityLedger().getActivities()).hasSize(2);
         assertThat(account.calculateBalance()).isEqualTo(Money.of(500));
     }
 
@@ -41,7 +41,7 @@ class AccountPersistenceAdapterTest {
     void updatesActivities() {
         Account account = defaultAccount()
             .withBaselineBalance(Money.of(555L))
-            .withActivityWindow(new ActivityWindow(defaultActivity().withId(null).withMoney(Money.of(1L)).build()))
+            .withActivityWindow(new ActivityLedger(defaultActivity().withId(null).withMoney(Money.of(1L)).build()))
             .build();
 
         adapterUnderTest.updateActivities(account);

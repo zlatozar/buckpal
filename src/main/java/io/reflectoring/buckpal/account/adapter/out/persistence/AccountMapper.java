@@ -9,9 +9,15 @@ import io.reflectoring.buckpal.account.domain.Account;
 import io.reflectoring.buckpal.account.domain.Account.AccountId;
 import io.reflectoring.buckpal.account.domain.Activity;
 import io.reflectoring.buckpal.account.domain.Activity.ActivityId;
-import io.reflectoring.buckpal.account.domain.ActivityWindow;
+import io.reflectoring.buckpal.account.domain.ActivityLedger;
 import io.reflectoring.buckpal.account.domain.Money;
 
+/**
+ * See https://mapstruct.org for better performance and error handling.
+ *
+ * Practical example could be found here:
+ *     https://reflectoring.io/java-mapping-with-mapstruct/
+ */
 @Component
 class AccountMapper {
 
@@ -23,7 +29,7 @@ class AccountMapper {
         return Account.withId(new AccountId(account.getId()), baselineBalance, mapToActivityWindow(activities));
     }
 
-    ActivityWindow mapToActivityWindow(List<ActivityJpaEntity> activities) {
+    ActivityLedger mapToActivityWindow(List<ActivityJpaEntity> activities) {
         List<Activity> mappedActivities = new ArrayList<>();
 
         for (ActivityJpaEntity activity : activities) {
@@ -36,7 +42,7 @@ class AccountMapper {
                 Money.of(activity.getAmount())));
         }
 
-        return new ActivityWindow(mappedActivities);
+        return new ActivityLedger(mappedActivities);
     }
 
     ActivityJpaEntity mapToJpaEntity(Activity activity) {

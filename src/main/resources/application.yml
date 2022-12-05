@@ -1,2 +1,7 @@
+spring:
+  # Init SQL schema before executing `data.sql`
+  jpa:
+    defer-datasource-initialization: true
+
 buckpal:
   transferThreshold: 10000

@@ -16,7 +16,7 @@ class AccountTest {
         Account account = defaultAccount()
             .withAccountId(accountId)
             .withBaselineBalance(Money.of(555L))
-            .withActivityWindow(new ActivityWindow(
+            .withActivityWindow(new ActivityLedger(
                 defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
                 defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
             .build();
@@ -32,7 +32,7 @@ class AccountTest {
         Account account = defaultAccount()
             .withAccountId(accountId)
             .withBaselineBalance(Money.of(555L))
-            .withActivityWindow(new ActivityWindow(
+            .withActivityWindow(new ActivityLedger(
                 defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
                 defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
             .build();
@@ -40,7 +40,7 @@ class AccountTest {
         boolean success = account.withdraw(Money.of(555L), new AccountId(99L));
 
         assertThat(success).isTrue();
-        assertThat(account.getActivityWindow().getActivities()).hasSize(3);
+        assertThat(account.getActivityLedger().getActivities()).hasSize(3);
         assertThat(account.calculateBalance()).isEqualTo(Money.of(1000L));
     }
 
@@ -50,7 +50,7 @@ class AccountTest {
         Account account = defaultAccount()
             .withAccountId(accountId)
             .withBaselineBalance(Money.of(555L))
-            .withActivityWindow(new ActivityWindow(
+            .withActivityWindow(new ActivityLedger(
                 defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
                 defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
             .build();
@@ -58,7 +58,7 @@ class AccountTest {
         boolean success = account.withdraw(Money.of(1556L), new AccountId(99L));
 
         assertThat(success).isFalse();
-        assertThat(account.getActivityWindow().getActivities()).hasSize(2);
+        assertThat(account.getActivityLedger().getActivities()).hasSize(2);
         assertThat(account.calculateBalance()).isEqualTo(Money.of(1555L));
     }
 
@@ -68,7 +68,7 @@ class AccountTest {
         Account account = defaultAccount()
             .withAccountId(accountId)
             .withBaselineBalance(Money.of(555L))
-            .withActivityWindow(new ActivityWindow(
+            .withActivityWindow(new ActivityLedger(
                 defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
                 defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
             .build();
@@ -76,7 +76,7 @@ class AccountTest {
         boolean success = account.deposit(Money.of(445L), new AccountId(99L));
 
         assertThat(success).isTrue();
-        assertThat(account.getActivityWindow().getActivities()).hasSize(3);
+        assertThat(account.getActivityLedger().getActivities()).hasSize(3);
         assertThat(account.calculateBalance()).isEqualTo(Money.of(2000L));
     }
 

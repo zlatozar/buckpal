@@ -13,11 +13,14 @@ import io.reflectoring.buckpal.account.domain.Activity;
 import io.reflectoring.buckpal.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Converts domain output to database action.
+ */
 @PersistenceAdapter
 @RequiredArgsConstructor
-class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePort {
+class AccountPersistence implements LoadAccountPort, UpdateAccountStatePort {
 
-    private final SpringDataAccountRepository accountRepository;
+    private final AccountRepository accountRepository;
     private final ActivityRepository activityRepository;
     private final AccountMapper accountMapper;
 
@@ -43,7 +46,7 @@ class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePo
 
     @Override
     public void updateActivities(Account account) {
-        for (Activity activity : account.getActivityWindow().getActivities()) {
+        for (Activity activity : account.getActivityLedger().getActivities()) {
 
             if (activity.getId() == null) {
                 activityRepository.save(accountMapper.mapToJpaEntity(activity));

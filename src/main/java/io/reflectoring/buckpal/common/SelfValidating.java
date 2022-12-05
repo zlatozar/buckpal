@@ -8,6 +8,13 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+/**
+ * For more information please refer:
+ *      https://beanvalidation.org
+ *
+ * Spring and bean validation could be found here:
+ *      https://reflectoring.io/bean-validation-with-spring-boot
+ */
 public abstract class SelfValidating<T> {
 
     private final Validator validator;
@@ -18,8 +25,7 @@ public abstract class SelfValidating<T> {
     }
 
     /**
-     * Evaluates all Bean Validations on the attributes of this
-     * instance.
+     * Evaluates all Bean Validations on the attributes of this instance.
      */
     @SuppressWarnings("unchecked")
     protected void validateSelf() {
