@@ -1,5 +1,21 @@
 package io.reflectoring.buckpal.account.application.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.times;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+
 import io.reflectoring.buckpal.account.application.port.in.SendMoneyCommand;
 import io.reflectoring.buckpal.account.application.port.out.AccountLock;
 import io.reflectoring.buckpal.account.application.port.out.LoadAccountPort;
@@ -7,17 +23,6 @@ import io.reflectoring.buckpal.account.application.port.out.UpdateAccountStatePo
 import io.reflectoring.buckpal.account.domain.Account;
 import io.reflectoring.buckpal.account.domain.Account.AccountId;
 import io.reflectoring.buckpal.account.domain.Money;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.*;
 
 class SendMoneyServiceTest {
 
@@ -28,7 +33,7 @@ class SendMoneyServiceTest {
     private final UpdateAccountStatePort updateAccountStatePort = Mockito.mock(UpdateAccountStatePort.class);
 
     private final SendMoneyService sendMoneyService =
-            new SendMoneyService(loadAccountPort, accountLock, updateAccountStatePort, moneyTransferProperties());
+        new SendMoneyService(loadAccountPort, accountLock, updateAccountStatePort, moneyTransferProperties());
 
     @Test
     void givenWithdrawalFails_thenOnlySourceAccountIsLockedAndReleased() {
@@ -65,7 +70,7 @@ class SendMoneyServiceTest {
         Money money = Money.of(500L);
 
         SendMoneyCommand command =
-                new SendMoneyCommand(sourceAccount.getId().get(), targetAccount.getId().get(), money);
+            new SendMoneyCommand(sourceAccount.getId().get(), targetAccount.getId().get(), money);
 
         boolean success = sendMoneyService.sendMoney(command);
 
@@ -92,9 +97,9 @@ class SendMoneyServiceTest {
         then(updateAccountStatePort).should(times(accountIds.length)).updateActivities(accountCaptor.capture());
 
         List<AccountId> updatedAccountIds = accountCaptor.getAllValues().stream()
-                .map(Account::getId)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+            .map(Account::getId)
+            .map(Optional::get)
+            .collect(Collectors.toList());
 
         for (AccountId accountId : accountIds) {
             assertThat(updatedAccountIds).contains(accountId);
@@ -103,7 +108,7 @@ class SendMoneyServiceTest {
 
     private void givenDepositWillSucceed(Account account) {
         given(account.deposit(any(Money.class), any(AccountId.class)))
-                .willReturn(true);
+            .willReturn(true);
     }
 
     private void givenWithdrawalWillFail(Account account) {

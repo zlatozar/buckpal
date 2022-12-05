@@ -1,21 +1,21 @@
 package io.reflectoring.buckpal.common;
 
+import java.time.LocalDateTime;
+
 import io.reflectoring.buckpal.account.domain.Account.AccountId;
 import io.reflectoring.buckpal.account.domain.Activity;
 import io.reflectoring.buckpal.account.domain.Activity.ActivityId;
 import io.reflectoring.buckpal.account.domain.Money;
 
-import java.time.LocalDateTime;
-
 public class ActivityTestData {
 
     public static ActivityBuilder defaultActivity() {
         return new ActivityBuilder()
-                .withOwnerAccount(new AccountId(42L))
-                .withSourceAccount(new AccountId(42L))
-                .withTargetAccount(new AccountId(41L))
-                .withTimestamp(LocalDateTime.now())
-                .withMoney(Money.of(999L));
+            .withOwnerAccount(new AccountId(42L))
+            .withSourceAccount(new AccountId(42L))
+            .withTargetAccount(new AccountId(41L))
+            .withTimestamp(LocalDateTime.now())
+            .withMoney(Money.of(999L));
     }
 
     public static class ActivityBuilder {
@@ -58,12 +58,12 @@ public class ActivityTestData {
 
         public Activity build() {
             return new Activity(
-                    this.id,
-                    this.ownerAccountId,
-                    this.sourceAccountId,
-                    this.targetAccountId,
-                    this.timestamp,
-                    this.money);
+                this.id,
+                this.ownerAccountId,
+                this.sourceAccountId,
+                this.targetAccountId,
+                this.timestamp,
+                this.money);
         }
     }
 }

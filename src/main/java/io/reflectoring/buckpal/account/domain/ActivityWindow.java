@@ -1,10 +1,14 @@
 package io.reflectoring.buckpal.account.domain;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import io.reflectoring.buckpal.account.domain.Account.AccountId;
 import lombok.NonNull;
-
-import java.time.LocalDateTime;
-import java.util.*;
 
 /**
  * A window of account activities.
@@ -29,9 +33,9 @@ public class ActivityWindow {
      */
     public LocalDateTime getStartTimestamp() {
         return activities.stream()
-                .min(Comparator.comparing(Activity::getTimestamp))
-                .orElseThrow(IllegalStateException::new)
-                .getTimestamp();
+            .min(Comparator.comparing(Activity::getTimestamp))
+            .orElseThrow(IllegalStateException::new)
+            .getTimestamp();
     }
 
     /**
@@ -41,9 +45,9 @@ public class ActivityWindow {
      */
     public LocalDateTime getEndTimestamp() {
         return activities.stream()
-                .max(Comparator.comparing(Activity::getTimestamp))
-                .orElseThrow(IllegalStateException::new)
-                .getTimestamp();
+            .max(Comparator.comparing(Activity::getTimestamp))
+            .orElseThrow(IllegalStateException::new)
+            .getTimestamp();
     }
 
     /**
@@ -51,14 +55,14 @@ public class ActivityWindow {
      */
     public Money calculateBalance(AccountId accountId) {
         Money depositBalance = activities.stream()
-                .filter(a -> a.getTargetAccountId().equals(accountId))
-                .map(Activity::getMoney)
-                .reduce(Money.ZERO, Money::add);
+            .filter(a -> a.getTargetAccountId().equals(accountId))
+            .map(Activity::getMoney)
+            .reduce(Money.ZERO, Money::add);
 
         Money withdrawalBalance = activities.stream()
-                .filter(a -> a.getSourceAccountId().equals(accountId))
-                .map(Activity::getMoney)
-                .reduce(Money.ZERO, Money::add);
+            .filter(a -> a.getSourceAccountId().equals(accountId))
+            .map(Activity::getMoney)
+            .reduce(Money.ZERO, Money::add);
 
         return Money.add(depositBalance, withdrawalBalance.negate());
     }

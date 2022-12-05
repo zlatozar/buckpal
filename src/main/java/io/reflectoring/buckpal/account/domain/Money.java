@@ -1,9 +1,9 @@
 package io.reflectoring.buckpal.account.domain;
 
+import java.math.BigInteger;
+
 import lombok.NonNull;
 import lombok.Value;
-
-import java.math.BigInteger;
 
 @Value
 public class Money {

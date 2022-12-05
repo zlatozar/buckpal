@@ -1,13 +1,16 @@
 package io.reflectoring.buckpal.account.application.port.in;
 
+import javax.validation.constraints.NotNull;
+
 import io.reflectoring.buckpal.account.domain.Account.AccountId;
 import io.reflectoring.buckpal.account.domain.Money;
 import io.reflectoring.buckpal.common.SelfValidating;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-import javax.validation.constraints.NotNull;
-
+/**
+ * Define command that could be executed by the application.
+ */
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class SendMoneyCommand extends SelfValidating<SendMoneyCommand> {

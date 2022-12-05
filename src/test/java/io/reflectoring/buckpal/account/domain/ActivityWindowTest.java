@@ -1,21 +1,22 @@
 package io.reflectoring.buckpal.account.domain;
 
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static io.reflectoring.buckpal.common.ActivityTestData.defaultActivity;
 
 import java.time.LocalDateTime;
 
-import static io.reflectoring.buckpal.common.ActivityTestData.defaultActivity;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import io.reflectoring.buckpal.account.domain.Account.AccountId;
 
 class ActivityWindowTest {
 
     @Test
     void calculatesStartTimestamp() {
         ActivityWindow window = new ActivityWindow(
-                defaultActivity().withTimestamp(startDate()).build(),
-                defaultActivity().withTimestamp(inBetweenDate()).build(),
-                defaultActivity().withTimestamp(endDate()).build());
+            defaultActivity().withTimestamp(startDate()).build(),
+            defaultActivity().withTimestamp(inBetweenDate()).build(),
+            defaultActivity().withTimestamp(endDate()).build());
 
         Assertions.assertThat(window.getStartTimestamp()).isEqualTo(startDate());
     }
@@ -23,9 +24,9 @@ class ActivityWindowTest {
     @Test
     void calculatesEndTimestamp() {
         ActivityWindow window = new ActivityWindow(
-                defaultActivity().withTimestamp(startDate()).build(),
-                defaultActivity().withTimestamp(inBetweenDate()).build(),
-                defaultActivity().withTimestamp(endDate()).build());
+            defaultActivity().withTimestamp(startDate()).build(),
+            defaultActivity().withTimestamp(inBetweenDate()).build(),
+            defaultActivity().withTimestamp(endDate()).build());
 
         Assertions.assertThat(window.getEndTimestamp()).isEqualTo(endDate());
     }
@@ -37,18 +38,18 @@ class ActivityWindowTest {
         AccountId account2 = new AccountId(2L);
 
         ActivityWindow window = new ActivityWindow(
-                defaultActivity()
-                        .withSourceAccount(account1)
-                        .withTargetAccount(account2)
-                        .withMoney(Money.of(999)).build(),
-                defaultActivity()
-                        .withSourceAccount(account1)
-                        .withTargetAccount(account2)
-                        .withMoney(Money.of(1)).build(),
-                defaultActivity()
-                        .withSourceAccount(account2)
-                        .withTargetAccount(account1)
-                        .withMoney(Money.of(500)).build());
+            defaultActivity()
+                .withSourceAccount(account1)
+                .withTargetAccount(account2)
+                .withMoney(Money.of(999)).build(),
+            defaultActivity()
+                .withSourceAccount(account1)
+                .withTargetAccount(account2)
+                .withMoney(Money.of(1)).build(),
+            defaultActivity()
+                .withSourceAccount(account2)
+                .withTargetAccount(account1)
+                .withMoney(Money.of(500)).build());
 
         Assertions.assertThat(window.calculateBalance(account1)).isEqualTo(Money.of(-500));
         Assertions.assertThat(window.calculateBalance(account2)).isEqualTo(Money.of(500));

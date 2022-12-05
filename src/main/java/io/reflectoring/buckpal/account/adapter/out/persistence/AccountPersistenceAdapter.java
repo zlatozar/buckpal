@@ -1,5 +1,10 @@
 package io.reflectoring.buckpal.account.adapter.out.persistence;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
+
 import io.reflectoring.buckpal.account.application.port.out.LoadAccountPort;
 import io.reflectoring.buckpal.account.application.port.out.UpdateAccountStatePort;
 import io.reflectoring.buckpal.account.domain.Account;
@@ -7,10 +12,6 @@ import io.reflectoring.buckpal.account.domain.Account.AccountId;
 import io.reflectoring.buckpal.account.domain.Activity;
 import io.reflectoring.buckpal.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -24,17 +25,17 @@ class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePo
     public Account loadAccount(AccountId accountId, LocalDateTime baselineDate) {
 
         AccountJpaEntity account = accountRepository
-                .findById(accountId.getValue())
-                .orElseThrow(EntityNotFoundException::new);
+            .findById(accountId.getValue())
+            .orElseThrow(EntityNotFoundException::new);
 
         List<ActivityJpaEntity> activities =
-                activityRepository.findByOwnerSince(accountId.getValue(), baselineDate);
+            activityRepository.findByOwnerSince(accountId.getValue(), baselineDate);
 
         Long withdrawalBalance = orZero(activityRepository
-                .getWithdrawalBalanceUntil(accountId.getValue(), baselineDate));
+            .getWithdrawalBalanceUntil(accountId.getValue(), baselineDate));
 
         Long depositBalance = orZero(activityRepository
-                .getDepositBalanceUntil(accountId.getValue(), baselineDate));
+            .getDepositBalanceUntil(accountId.getValue(), baselineDate));
 
         return accountMapper.mapToDomainEntity(account, activities, withdrawalBalance, depositBalance);
 

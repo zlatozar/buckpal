@@ -1,11 +1,12 @@
 package io.reflectoring.buckpal.account.domain;
 
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
-import org.junit.jupiter.api.Test;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.reflectoring.buckpal.common.AccountTestData.defaultAccount;
 import static io.reflectoring.buckpal.common.ActivityTestData.defaultActivity;
-import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+
+import io.reflectoring.buckpal.account.domain.Account.AccountId;
 
 class AccountTest {
 
@@ -13,12 +14,12 @@ class AccountTest {
     void calculatesBalance() {
         AccountId accountId = new AccountId(1L);
         Account account = defaultAccount()
-                .withAccountId(accountId)
-                .withBaselineBalance(Money.of(555L))
-                .withActivityWindow(new ActivityWindow(
-                        defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
-                        defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
-                .build();
+            .withAccountId(accountId)
+            .withBaselineBalance(Money.of(555L))
+            .withActivityWindow(new ActivityWindow(
+                defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
+                defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
+            .build();
 
         Money balance = account.calculateBalance();
 
@@ -29,12 +30,12 @@ class AccountTest {
     void withdrawalSucceeds() {
         AccountId accountId = new AccountId(1L);
         Account account = defaultAccount()
-                .withAccountId(accountId)
-                .withBaselineBalance(Money.of(555L))
-                .withActivityWindow(new ActivityWindow(
-                        defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
-                        defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
-                .build();
+            .withAccountId(accountId)
+            .withBaselineBalance(Money.of(555L))
+            .withActivityWindow(new ActivityWindow(
+                defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
+                defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
+            .build();
 
         boolean success = account.withdraw(Money.of(555L), new AccountId(99L));
 
@@ -47,12 +48,12 @@ class AccountTest {
     void withdrawalFailure() {
         AccountId accountId = new AccountId(1L);
         Account account = defaultAccount()
-                .withAccountId(accountId)
-                .withBaselineBalance(Money.of(555L))
-                .withActivityWindow(new ActivityWindow(
-                        defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
-                        defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
-                .build();
+            .withAccountId(accountId)
+            .withBaselineBalance(Money.of(555L))
+            .withActivityWindow(new ActivityWindow(
+                defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
+                defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
+            .build();
 
         boolean success = account.withdraw(Money.of(1556L), new AccountId(99L));
 
@@ -65,12 +66,12 @@ class AccountTest {
     void depositSuccess() {
         AccountId accountId = new AccountId(1L);
         Account account = defaultAccount()
-                .withAccountId(accountId)
-                .withBaselineBalance(Money.of(555L))
-                .withActivityWindow(new ActivityWindow(
-                        defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
-                        defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
-                .build();
+            .withAccountId(accountId)
+            .withBaselineBalance(Money.of(555L))
+            .withActivityWindow(new ActivityWindow(
+                defaultActivity().withTargetAccount(accountId).withMoney(Money.of(999L)).build(),
+                defaultActivity().withTargetAccount(accountId).withMoney(Money.of(1L)).build()))
+            .build();
 
         boolean success = account.deposit(Money.of(445L), new AccountId(99L));
 

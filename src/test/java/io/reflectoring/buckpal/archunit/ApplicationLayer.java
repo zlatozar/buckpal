@@ -1,9 +1,9 @@
 package io.reflectoring.buckpal.archunit;
 
-import com.tngtech.archunit.core.domain.JavaClasses;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.tngtech.archunit.core.domain.JavaClasses;
 
 public class ApplicationLayer extends ArchitectureElement {
 

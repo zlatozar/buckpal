@@ -1,9 +1,9 @@
 package io.reflectoring.buckpal.account.application.port.out;
 
+import java.time.LocalDateTime;
+
 import io.reflectoring.buckpal.account.domain.Account;
 import io.reflectoring.buckpal.account.domain.Account.AccountId;
-
-import java.time.LocalDateTime;
 
 public interface LoadAccountPort {
 

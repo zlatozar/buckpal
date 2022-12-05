@@ -1,12 +1,12 @@
 package io.reflectoring.buckpal.account.domain;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * An account that holds a certain amount of money. An {@link Account} object only
