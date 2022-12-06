@@ -8,20 +8,20 @@ import javax.persistence.EntityNotFoundException;
 import io.reflectoring.buckpal.account.application.port.out.LoadAccountPort;
 import io.reflectoring.buckpal.account.application.port.out.UpdateAccountStatePort;
 import io.reflectoring.buckpal.account.domain.Account;
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
+import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.account.domain.Activity;
 import io.reflectoring.buckpal.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Converts domain output to database action.
+ * Converts domain output to database input action.
  */
 @PersistenceAdapter
 @RequiredArgsConstructor
 class AccountPersistence implements LoadAccountPort, UpdateAccountStatePort {
 
     private final AccountRepository accountRepository;
-    private final ActivityRepository activityRepository;
+    private final ActivityQueryRepository activityQueryRepository;
     private final AccountMapper accountMapper;
 
     @Override
@@ -32,12 +32,12 @@ class AccountPersistence implements LoadAccountPort, UpdateAccountStatePort {
             .orElseThrow(EntityNotFoundException::new);
 
         List<ActivityJpaEntity> activities =
-            activityRepository.findByOwnerSince(accountId.getValue(), baselineDate);
+            activityQueryRepository.findByOwnerSince(accountId.getValue(), baselineDate);
 
-        Long withdrawalBalance = orZero(activityRepository
+        Long withdrawalBalance = orZero(activityQueryRepository
             .getWithdrawalBalanceUntil(accountId.getValue(), baselineDate));
 
-        Long depositBalance = orZero(activityRepository
+        Long depositBalance = orZero(activityQueryRepository
             .getDepositBalanceUntil(accountId.getValue(), baselineDate));
 
         return accountMapper.mapToDomainEntity(account, activities, withdrawalBalance, depositBalance);
@@ -49,7 +49,7 @@ class AccountPersistence implements LoadAccountPort, UpdateAccountStatePort {
         for (Activity activity : account.getActivityLedger().getActivities()) {
 
             if (activity.getId() == null) {
-                activityRepository.save(accountMapper.mapToJpaEntity(activity));
+                activityQueryRepository.save(accountMapper.mapToJpaEntity(activity));
             }
         }
     }

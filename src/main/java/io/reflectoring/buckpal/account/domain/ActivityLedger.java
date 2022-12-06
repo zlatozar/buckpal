@@ -7,12 +7,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
 import lombok.NonNull;
+import lombok.Value;
 
 /**
  * A ledger of account activities.
  */
+@Value
 public class ActivityLedger {
 
     /**
@@ -40,8 +41,6 @@ public class ActivityLedger {
 
     /**
      * The timestamp of the last activity within this window.
-     *
-     * @return
      */
     public LocalDateTime getEndTimestamp() {
         return activities.stream()

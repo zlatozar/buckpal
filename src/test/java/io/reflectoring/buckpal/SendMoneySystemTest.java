@@ -18,7 +18,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import io.reflectoring.buckpal.account.application.port.out.LoadAccountPort;
 import io.reflectoring.buckpal.account.domain.Account;
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
+import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.account.domain.Money;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

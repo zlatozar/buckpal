@@ -1,3 +1,3 @@
 ## Package content
 
-Contains domain entities.
+Contains domain `entities` and `value` objects.

@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
-import io.reflectoring.buckpal.account.application.port.in.SendMoneyCommand;
+import io.reflectoring.buckpal.account.application.port.in.SendMoneyDTO;
 import io.reflectoring.buckpal.account.application.port.in.SendMoneyUseCase;
 import io.reflectoring.buckpal.account.application.port.out.AccountLock;
 import io.reflectoring.buckpal.account.application.port.out.LoadAccountPort;
 import io.reflectoring.buckpal.account.application.port.out.UpdateAccountStatePort;
 import io.reflectoring.buckpal.account.domain.Account;
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
+import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.common.UseCase;
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +29,7 @@ public class SendMoneyService implements SendMoneyUseCase {
     private final MoneyTransferProperties moneyTransferProperties;
 
     @Override
-    public boolean sendMoney(SendMoneyCommand command) {
+    public boolean sendMoney(SendMoneyDTO command) {
 
         checkThreshold(command);
 
@@ -71,7 +71,7 @@ public class SendMoneyService implements SendMoneyUseCase {
 
     // Helper methods
 
-    private void checkThreshold(SendMoneyCommand command) {
+    private void checkThreshold(SendMoneyDTO command) {
         if (command.getMoney().isGreaterThan(moneyTransferProperties.getMaximumTransferThreshold())) {
             throw new ThresholdExceededException(moneyTransferProperties.getMaximumTransferThreshold(), command.getMoney());
         }

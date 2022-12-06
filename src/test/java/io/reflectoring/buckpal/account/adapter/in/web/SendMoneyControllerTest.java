@@ -11,9 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import io.reflectoring.buckpal.account.application.port.in.SendMoneyCommand;
+import io.reflectoring.buckpal.account.application.port.in.SendMoneyDTO;
 import io.reflectoring.buckpal.account.application.port.in.SendMoneyUseCase;
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
+import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.account.domain.Money;
 
 @WebMvcTest(controllers = SendMoneyController.class)
@@ -33,7 +33,7 @@ class SendMoneyControllerTest {
             .andExpect(status().isOk());
 
         then(sendMoneyUseCase).should()
-            .sendMoney(eq(new SendMoneyCommand(new AccountId(41L), new AccountId(42L), Money.of(500L))));
+            .sendMoney(eq(new SendMoneyDTO(new AccountId(41L), new AccountId(42L), Money.of(500L))));
     }
 
 }

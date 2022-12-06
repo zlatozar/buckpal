@@ -6,8 +6,6 @@ import static io.reflectoring.buckpal.common.ActivityTestData.defaultActivity;
 
 import org.junit.jupiter.api.Test;
 
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
-
 class AccountTest {
 
     @Test

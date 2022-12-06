@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
-
 class ActivityLedgerTest {
 
     @Test

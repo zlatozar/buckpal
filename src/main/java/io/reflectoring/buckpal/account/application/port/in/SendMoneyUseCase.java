@@ -1,10 +1,10 @@
 package io.reflectoring.buckpal.account.application.port.in;
 
 /**
- * Define possible use case operations/commands.
+ * Define commands that domain logic could fulfill.
  */
 public interface SendMoneyUseCase {
 
-    boolean sendMoney(SendMoneyCommand command);
+    boolean sendMoney(SendMoneyDTO command);
 
 }

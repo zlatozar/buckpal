@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 import io.reflectoring.buckpal.account.domain.Account;
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
+import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.account.domain.ActivityLedger;
 import io.reflectoring.buckpal.account.domain.Money;
 
@@ -25,7 +25,7 @@ class AccountPersistenceTest {
     private AccountPersistence adapterUnderTest;
 
     @Autowired
-    private ActivityRepository activityRepository;
+    private ActivityQueryRepository activityQueryRepository;
 
     @Test
     @Sql("AccountPersistenceAdapterTest.sql")
@@ -46,9 +46,9 @@ class AccountPersistenceTest {
 
         adapterUnderTest.updateActivities(account);
 
-        assertThat(activityRepository.count()).isEqualTo(1);
+        assertThat(activityQueryRepository.count()).isEqualTo(1);
 
-        ActivityJpaEntity savedActivity = activityRepository.findAll().get(0);
+        ActivityJpaEntity savedActivity = activityQueryRepository.findAll().get(0);
         assertThat(savedActivity.getAmount()).isEqualTo(1L);
     }
 

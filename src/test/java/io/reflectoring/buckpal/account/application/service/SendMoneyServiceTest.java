@@ -9,19 +9,18 @@ import static org.mockito.BDDMockito.times;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import io.reflectoring.buckpal.account.application.port.in.SendMoneyCommand;
+import io.reflectoring.buckpal.account.application.port.in.SendMoneyDTO;
 import io.reflectoring.buckpal.account.application.port.out.AccountLock;
 import io.reflectoring.buckpal.account.application.port.out.LoadAccountPort;
 import io.reflectoring.buckpal.account.application.port.out.UpdateAccountStatePort;
 import io.reflectoring.buckpal.account.domain.Account;
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
+import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.account.domain.Money;
 
 class SendMoneyServiceTest {
@@ -47,7 +46,7 @@ class SendMoneyServiceTest {
         givenWithdrawalWillFail(sourceAccount);
         givenDepositWillSucceed(targetAccount);
 
-        SendMoneyCommand command = new SendMoneyCommand(sourceAccountId, targetAccountId, Money.of(300L));
+        SendMoneyDTO command = new SendMoneyDTO(sourceAccountId, targetAccountId, Money.of(300L));
 
         boolean success = sendMoneyService.sendMoney(command);
 
@@ -69,8 +68,8 @@ class SendMoneyServiceTest {
 
         Money money = Money.of(500L);
 
-        SendMoneyCommand command =
-            new SendMoneyCommand(sourceAccount.getId(), targetAccount.getId(), money);
+        SendMoneyDTO command =
+            new SendMoneyDTO(sourceAccount.getId(), targetAccount.getId(), money);
 
         boolean success = sendMoneyService.sendMoney(command);
 

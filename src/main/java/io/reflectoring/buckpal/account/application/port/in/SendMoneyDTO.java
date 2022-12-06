@@ -2,18 +2,20 @@ package io.reflectoring.buckpal.account.application.port.in;
 
 import javax.validation.constraints.NotNull;
 
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
+import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.account.domain.Money;
 import io.reflectoring.buckpal.common.SelfValidating;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 /**
- * Define command that could be executed by the application.
+ * Hub all data that is needed to execute the command.
+ *
+ * @see SendMoneyUseCase#sendMoney(SendMoneyDTO)
  */
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class SendMoneyCommand extends SelfValidating<SendMoneyCommand> {
+public class SendMoneyDTO extends SelfValidating<SendMoneyDTO> {
 
     @NotNull
     private final AccountId sourceAccountId;
@@ -24,7 +26,7 @@ public class SendMoneyCommand extends SelfValidating<SendMoneyCommand> {
     @NotNull
     private final Money money;
 
-    public SendMoneyCommand(AccountId sourceAccountId, AccountId targetAccountId, Money money) {
+    public SendMoneyDTO(AccountId sourceAccountId, AccountId targetAccountId, Money money) {
         this.sourceAccountId = sourceAccountId;
         this.targetAccountId = targetAccountId;
         this.money = money;

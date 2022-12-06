@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 /**
- * A money transfer activity between {@link Account}s.
+ * Entity object that represents a money transfer activity between {@link Account}s.
  */
 @Value
 @RequiredArgsConstructor
@@ -22,21 +22,21 @@ public class Activity {
      */
     @Getter
     @NonNull
-    private final Account.AccountId ownerAccountId;
+    private final AccountId ownerAccountId;
 
     /**
      * The debited account.
      */
     @Getter
     @NonNull
-    private final Account.AccountId sourceAccountId;
+    private final AccountId sourceAccountId;
 
     /**
      * The credited account.
      */
     @Getter
     @NonNull
-    private final Account.AccountId targetAccountId;
+    private final AccountId targetAccountId;
 
     /**
      * The timestamp of the activity.
@@ -52,9 +52,9 @@ public class Activity {
     @NonNull
     private final Money money;
 
-    public Activity(@NonNull Account.AccountId ownerAccountId,
-        @NonNull Account.AccountId sourceAccountId,
-        @NonNull Account.AccountId targetAccountId,
+    public Activity(@NonNull AccountId ownerAccountId,
+        @NonNull AccountId sourceAccountId,
+        @NonNull AccountId targetAccountId,
         @NonNull LocalDateTime timestamp,
         @NonNull Money money) {
 
@@ -65,13 +65,6 @@ public class Activity {
         this.targetAccountId = targetAccountId;
         this.timestamp = timestamp;
         this.money = money;
-    }
-
-    // Inner class
-
-    @Value
-    public static class ActivityId {
-        private final Long value;
     }
 
 }

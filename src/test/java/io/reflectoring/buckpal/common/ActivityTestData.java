@@ -2,9 +2,9 @@ package io.reflectoring.buckpal.common;
 
 import java.time.LocalDateTime;
 
-import io.reflectoring.buckpal.account.domain.Account.AccountId;
+import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.account.domain.Activity;
-import io.reflectoring.buckpal.account.domain.Activity.ActivityId;
+import io.reflectoring.buckpal.account.domain.ActivityId;
 import io.reflectoring.buckpal.account.domain.Money;
 
 public class ActivityTestData {

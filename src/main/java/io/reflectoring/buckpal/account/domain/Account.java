@@ -89,11 +89,4 @@ public class Account {
         return Money.add(this.calculateBalance(), money.negate()).isPositiveOrZero();
     }
 
-    // Inner class
-
-    @Value
-    public static class AccountId {
-        private Long value;
-    }
-
 }
