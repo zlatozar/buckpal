@@ -31,16 +31,16 @@ public class SendMoneyService implements SendMoneyUseCase {
     @Override
     public boolean sendMoney(SendMoneyDTO command) {
 
+        // validate
         checkThreshold(command);
 
-        LocalDateTime baselineDate = LocalDateTime.now().minusDays(10);
+        final LocalDateTime baselineDate = LocalDateTime.now().minusDays(10);
 
-        Account sourceAccount = loadAccountPort.loadAccount(command.getSourceAccountId(), baselineDate);
+        final Account sourceAccount = loadAccountPort.loadAccount(command.getSourceAccountId(), baselineDate);
+        final Account targetAccount = loadAccountPort.loadAccount(command.getTargetAccountId(), baselineDate);
 
-        Account targetAccount = loadAccountPort.loadAccount(command.getTargetAccountId(), baselineDate);
-
-        AccountId sourceAccountId = sourceAccount.getId();
-        AccountId targetAccountId = targetAccount.getId();
+        final AccountId sourceAccountId = sourceAccount.getId();
+        final AccountId targetAccountId = targetAccount.getId();
 
         accountLock.lockAccount(sourceAccountId);
 
@@ -72,8 +72,11 @@ public class SendMoneyService implements SendMoneyUseCase {
     // Helper methods
 
     private void checkThreshold(SendMoneyDTO command) {
-        if (command.getMoney().isGreaterThan(moneyTransferProperties.getMaximumTransferThreshold())) {
-            throw new ThresholdExceededException(moneyTransferProperties.getMaximumTransferThreshold(), command.getMoney());
+        if (command.getMoney()
+            .isGreaterThan(moneyTransferProperties.getMaximumTransferThreshold())) {
+
+            throw new ThresholdExceededException(
+                moneyTransferProperties.getMaximumTransferThreshold(), command.getMoney());
         }
     }
 

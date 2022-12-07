@@ -64,7 +64,8 @@ public class Account {
             return false;
         }
 
-        Activity withdrawal = new Activity(this.id, this.id, targetAccountId, LocalDateTime.now(), money);
+        final Activity withdrawal =
+            new Activity(this.id, this.id, targetAccountId, LocalDateTime.now(), money);
         this.activityLedger.addActivity(withdrawal);
 
         return true;
@@ -77,7 +78,8 @@ public class Account {
      * @return true if the deposit was successful, false if not.
      */
     public boolean deposit(Money money, AccountId sourceAccountId) {
-        Activity deposit = new Activity(this.id, sourceAccountId, this.id, LocalDateTime.now(), money);
+        final Activity deposit =
+            new Activity(this.id, sourceAccountId, this.id, LocalDateTime.now(), money);
         this.activityLedger.addActivity(deposit);
 
         return true;

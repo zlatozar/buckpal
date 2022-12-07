@@ -24,13 +24,14 @@ class AccountMapper {
     Account mapToDomainEntity(AccountJpaEntity account, List<ActivityJpaEntity> activities,
         Long withdrawalBalance, Long depositBalance) {
 
-        Money baselineBalance = Money.subtract(Money.of(depositBalance), Money.of(withdrawalBalance));
+        final Money baselineBalance =
+            Money.subtract(Money.of(depositBalance), Money.of(withdrawalBalance));
 
         return Account.withId(new AccountId(account.getId()), baselineBalance, mapToActivityWindow(activities));
     }
 
     ActivityLedger mapToActivityWindow(List<ActivityJpaEntity> activities) {
-        List<Activity> mappedActivities = new ArrayList<>();
+        final List<Activity> mappedActivities = new ArrayList<>();
 
         for (ActivityJpaEntity activity : activities) {
             mappedActivities.add(new Activity(

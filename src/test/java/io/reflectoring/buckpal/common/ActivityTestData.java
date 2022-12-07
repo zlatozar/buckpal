@@ -18,6 +18,8 @@ public class ActivityTestData {
             .withMoney(Money.of(999L));
     }
 
+    // Helper class
+
     public static class ActivityBuilder {
         private ActivityId id;
         private AccountId ownerAccountId;

@@ -29,6 +29,14 @@ public class ActivityLedger {
         this.activities = new ArrayList<>(Arrays.asList(activities));
     }
 
+    public List<Activity> getActivities() {
+        return Collections.unmodifiableList(this.activities);
+    }
+
+    public void addActivity(Activity activity) {
+        this.activities.add(activity);
+    }
+
     /**
      * The timestamp of the first activity within this window.
      */
@@ -53,24 +61,16 @@ public class ActivityLedger {
      * Calculates the balance by summing up the values of all activities within this window.
      */
     public Money calculateBalance(AccountId accountId) {
-        Money depositBalance = activities.stream()
+        final Money depositBalance = activities.stream()
             .filter(a -> a.getTargetAccountId().equals(accountId))
             .map(Activity::getMoney)
             .reduce(Money.ZERO, Money::add);
 
-        Money withdrawalBalance = activities.stream()
+        final Money withdrawalBalance = activities.stream()
             .filter(a -> a.getSourceAccountId().equals(accountId))
             .map(Activity::getMoney)
             .reduce(Money.ZERO, Money::add);
 
         return Money.add(depositBalance, withdrawalBalance.negate());
-    }
-
-    public List<Activity> getActivities() {
-        return Collections.unmodifiableList(this.activities);
-    }
-
-    public void addActivity(Activity activity) {
-        this.activities.add(activity);
     }
 }

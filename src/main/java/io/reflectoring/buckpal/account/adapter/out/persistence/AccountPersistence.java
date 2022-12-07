@@ -27,17 +27,17 @@ class AccountPersistence implements LoadAccountPort, UpdateAccountStatePort {
     @Override
     public Account loadAccount(AccountId accountId, LocalDateTime baselineDate) {
 
-        AccountJpaEntity account = accountRepository
+        final AccountJpaEntity account = accountRepository
             .findById(accountId.getValue())
             .orElseThrow(EntityNotFoundException::new);
 
-        List<ActivityJpaEntity> activities =
+        final List<ActivityJpaEntity> activities =
             activityQueryRepository.findByOwnerSince(accountId.getValue(), baselineDate);
 
-        Long withdrawalBalance = orZero(activityQueryRepository
+        final Long withdrawalBalance = orZero(activityQueryRepository
             .getWithdrawalBalanceUntil(accountId.getValue(), baselineDate));
 
-        Long depositBalance = orZero(activityQueryRepository
+        final Long depositBalance = orZero(activityQueryRepository
             .getDepositBalanceUntil(accountId.getValue(), baselineDate));
 
         return accountMapper.mapToDomainEntity(account, activities, withdrawalBalance, depositBalance);

@@ -28,11 +28,12 @@ class SendMoneyController {
         @PathVariable("targetAccountId") Long targetAccountId,
         @PathVariable("amount") Long amount) {
 
+        // TIP: Parameter validation should be made by OpenAPI specification.
+
         // Collect all needed data for the particular command.
-        SendMoneyDTO command =
+        SendMoneyDTO dto =
             new SendMoneyDTO(new AccountId(sourceAccountId), new AccountId(targetAccountId), Money.of(amount));
 
-        sendMoneyUseCase.sendMoney(command);
+        sendMoneyUseCase.sendMoney(dto);
     }
-
 }

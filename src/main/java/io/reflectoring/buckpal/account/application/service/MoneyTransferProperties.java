@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Configuration properties for money transfer use cases.
+ * Particular use case specific configuration properties for money transfer.
  */
 @Data
 @AllArgsConstructor

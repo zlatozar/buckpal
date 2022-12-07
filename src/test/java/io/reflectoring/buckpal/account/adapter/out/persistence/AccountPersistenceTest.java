@@ -41,7 +41,8 @@ class AccountPersistenceTest {
     void updatesActivities() {
         Account account = defaultAccount()
             .withBaselineBalance(Money.of(555L))
-            .withActivityWindow(new ActivityLedger(defaultActivity().withId(null).withMoney(Money.of(1L)).build()))
+            .withActivityWindow(new ActivityLedger(defaultActivity()
+                .withId(null).withMoney(Money.of(1L)).build()))
             .build();
 
         adapterUnderTest.updateActivities(account);
