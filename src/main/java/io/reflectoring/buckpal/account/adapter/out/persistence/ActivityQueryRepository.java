@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
+ * Query DB interface.
+ *
  * As alternative JOOQ could be used to create type safe SQL statements.
  * More information: https://www.jooq.org
  */
@@ -18,6 +20,9 @@ interface ActivityQueryRepository extends JpaRepository<ActivityJpaEntity, Long>
         "and a.timestamp >= :since")
     List<ActivityJpaEntity> findByOwnerSince(@Param("ownerAccountId") Long ownerAccountId,
         @Param("since") LocalDateTime since);
+
+    // TIP: All supplementary operations that helps to domain operation
+    //      should have suffix `Util`.
 
     @Query("select sum(a.amount) from ActivityJpaEntity a " +
         "where a.targetAccountId = :accountId " +

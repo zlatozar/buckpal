@@ -6,20 +6,21 @@ import javax.transaction.Transactional;
 
 import io.reflectoring.buckpal.account.application.port.in.SendMoneyDTO;
 import io.reflectoring.buckpal.account.application.port.in.SendMoneyUseCase;
-import io.reflectoring.buckpal.account.application.port.out.AccountLock;
 import io.reflectoring.buckpal.account.application.port.out.LoadAccountPort;
 import io.reflectoring.buckpal.account.application.port.out.UpdateAccountStatePort;
 import io.reflectoring.buckpal.account.domain.Account;
 import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.common.UseCase;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Use case implementation.
+ * 'Send money' sse case implementation.
  */
 @UseCase
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class SendMoneyService implements SendMoneyUseCase {
 
     // Order matters
@@ -31,7 +32,7 @@ public class SendMoneyService implements SendMoneyUseCase {
     @Override
     public boolean sendMoney(SendMoneyDTO command) {
 
-        // validate
+        // Validate, but business should know how to handle it.
         checkThreshold(command);
 
         final LocalDateTime baselineDate = LocalDateTime.now().minusDays(10);
@@ -46,6 +47,7 @@ public class SendMoneyService implements SendMoneyUseCase {
 
         // May withdraw or not?
         if (!sourceAccount.withdraw(command.getMoney(), targetAccountId)) {
+            log.error("Sender '{}' doesn't have enough money. Transfer fails.", sourceAccountId);
             accountLock.releaseAccount(sourceAccountId);
 
             return false;
@@ -57,6 +59,7 @@ public class SendMoneyService implements SendMoneyUseCase {
             accountLock.releaseAccount(sourceAccountId);
             accountLock.releaseAccount(targetAccountId);
 
+            log.error("Can't write in financial ledger of user '{}'. Transfer fails", targetAccountId);
             return false;
         }
 
@@ -66,6 +69,7 @@ public class SendMoneyService implements SendMoneyUseCase {
         accountLock.releaseAccount(sourceAccountId);
         accountLock.releaseAccount(targetAccountId);
 
+        log.info("Successful transfer {} -> {}", sourceAccount, targetAccount);
         return true;
     }
 

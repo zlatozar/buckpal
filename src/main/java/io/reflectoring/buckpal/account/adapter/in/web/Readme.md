@@ -1,3 +1,3 @@
 ## Package content
 
-Convert HTTP requests to domain commands.
+Controllers that convert HTTP requests to domain commands.

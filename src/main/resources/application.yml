@@ -1,7 +1,8 @@
+# Init SQL schema before executing `data.sql`
 spring:
-  # Init SQL schema before executing `data.sql`
   jpa:
     defer-datasource-initialization: true
 
+# Project specific
 buckpal:
   transferThreshold: 10000

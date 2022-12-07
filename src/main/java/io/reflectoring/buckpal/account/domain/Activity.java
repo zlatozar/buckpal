@@ -58,6 +58,7 @@ public class Activity {
         @NonNull LocalDateTime timestamp,
         @NonNull Money money) {
 
+        // Dummy...
         this.id = null;
 
         this.ownerAccountId = ownerAccountId;

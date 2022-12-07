@@ -9,7 +9,7 @@ import lombok.Value;
 
 /**
  * An account that holds a certain amount of money. An {@link Account} object only
- * contains a window of the latest account activities. The total balance of the account is
+ * contains a ledger of the latest account activities. The total balance of the account is
  * the sum of a baseline balance that was valid before the first activity in the
  * window and the sum of the activity values.
  */
@@ -22,20 +22,21 @@ public class Account {
     private final AccountId id;
 
     /**
-     * The baseline balance of the account. This was the balance of the account before the first
-     * activity in the activityWindow.
+     * The baseline balance of the account.
+     * This was the balance of the account before the first activity in the `activityLedger`.
      */
     @Getter
     private final Money baselineBalance;
 
     /**
-     * The window of the latest activities on this account.
+     * The list of the latest activities on this account.
      */
     @Getter
     private final ActivityLedger activityLedger;
 
     /**
-     * Creates an {@link Account} entity with an ID. Use to reconstitute a persisted entity.
+     * Creates an {@link Account} entity with an ID.
+     * Use to reconstitute a persisted entity.
      */
     public static Account withId(AccountId accountId, Money baselineBalance, ActivityLedger activityLedger) {
         return new Account(accountId, baselineBalance, activityLedger);
@@ -45,8 +46,11 @@ public class Account {
         return this.id;
     }
 
+    // Operations definitions
+
     /**
-     * Calculates the total balance of the account by adding the activity values to the baseline balance.
+     * Calculates the total balance of the account by adding the activity values
+     * to the baseline balance.
      */
     public Money calculateBalance() {
         return Money.add(this.baselineBalance, this.activityLedger.calculateBalance(this.id));

@@ -17,7 +17,7 @@ import lombok.Value;
 public class ActivityLedger {
 
     /**
-     * The list of account activities within this window.
+     * The list of account activities within this time window.
      */
     private final List<Activity> activities;
 
@@ -38,7 +38,7 @@ public class ActivityLedger {
     }
 
     /**
-     * The timestamp of the first activity within this window.
+     * The timestamp of the first activity within this time window.
      */
     public LocalDateTime getStartTimestamp() {
         return activities.stream()
@@ -48,7 +48,7 @@ public class ActivityLedger {
     }
 
     /**
-     * The timestamp of the last activity within this window.
+     * The timestamp of the last activity within this time window.
      */
     public LocalDateTime getEndTimestamp() {
         return activities.stream()
@@ -58,7 +58,8 @@ public class ActivityLedger {
     }
 
     /**
-     * Calculates the balance by summing up the values of all activities within this window.
+     * Calculates the balance by summing up the values of all activities
+     * within this time window.
      */
     public Money calculateBalance(AccountId accountId) {
         final Money depositBalance = activities.stream()

@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * In terms of DDD this is a Domain Service - do some work that is
- * command and part of many use cases.
+ * common and part of many use cases.
  */
 @RequiredArgsConstructor
 class GetAccountBalanceService implements GetAccountBalanceQuery {

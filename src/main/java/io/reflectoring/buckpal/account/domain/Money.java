@@ -13,6 +13,8 @@ public class Money {
     @NonNull
     private final BigInteger amount;
 
+    // Operations definition
+
     public boolean isPositiveOrZero() {
         return this.amount.compareTo(BigInteger.ZERO) >= 0;
     }

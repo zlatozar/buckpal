@@ -8,6 +8,9 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 import io.reflectoring.buckpal.archunit.HexagonalArchitecture;
 
+/**
+ * Architecture structure test based on our custom ArchUnit rules.
+ */
 class DependencyRuleTests {
 
     @Test

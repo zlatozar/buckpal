@@ -18,11 +18,11 @@ import io.reflectoring.buckpal.account.domain.ActivityLedger;
 import io.reflectoring.buckpal.account.domain.Money;
 
 @DataJpaTest
-@Import({ AccountPersistence.class, AccountMapper.class })
-class AccountPersistenceTest {
+@Import({ AccountPersistenceFacade.class, AccountMapper.class })
+class AccountPersistenceFacadeTest {
 
     @Autowired
-    private AccountPersistence adapterUnderTest;
+    private AccountPersistenceFacade adapterUnderTest;
 
     @Autowired
     private ActivityQueryRepository activityQueryRepository;

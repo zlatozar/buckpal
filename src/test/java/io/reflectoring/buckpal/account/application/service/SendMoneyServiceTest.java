@@ -16,20 +16,23 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import io.reflectoring.buckpal.account.application.port.in.SendMoneyDTO;
-import io.reflectoring.buckpal.account.application.port.out.AccountLock;
 import io.reflectoring.buckpal.account.application.port.out.LoadAccountPort;
 import io.reflectoring.buckpal.account.application.port.out.UpdateAccountStatePort;
 import io.reflectoring.buckpal.account.domain.Account;
 import io.reflectoring.buckpal.account.domain.AccountId;
 import io.reflectoring.buckpal.account.domain.Money;
 
+/**
+ * Main use case test.
+ */
 class SendMoneyServiceTest {
 
     private final LoadAccountPort loadAccountPort = Mockito.mock(LoadAccountPort.class);
 
     private final AccountLock accountLock = Mockito.mock(AccountLock.class);
 
-    private final UpdateAccountStatePort updateAccountStatePort = Mockito.mock(UpdateAccountStatePort.class);
+    private final UpdateAccountStatePort updateAccountStatePort =
+        Mockito.mock(UpdateAccountStatePort.class);
 
     private final SendMoneyService sendMoneyService =
         new SendMoneyService(loadAccountPort, accountLock, updateAccountStatePort, moneyTransferProperties());
@@ -46,7 +49,8 @@ class SendMoneyServiceTest {
         givenWithdrawalWillFail(sourceAccount);
         givenDepositWillSucceed(targetAccount);
 
-        SendMoneyDTO command = new SendMoneyDTO(sourceAccountId, targetAccountId, Money.of(300L));
+        SendMoneyDTO command =
+            new SendMoneyDTO(sourceAccountId, targetAccountId, Money.of(300L));
 
         boolean success = sendMoneyService.sendMoney(command);
 
@@ -90,27 +94,22 @@ class SendMoneyServiceTest {
     }
 
     // Helper methods
+    private Account givenAnAccountWithId(AccountId id) {
+        Account account = Mockito.mock(Account.class);
 
-    private void thenAccountsHaveBeenUpdated(AccountId... accountIds) {
-        ArgumentCaptor<Account> accountCaptor = ArgumentCaptor.forClass(Account.class);
-        then(updateAccountStatePort).should(times(accountIds.length)).updateActivities(accountCaptor.capture());
+        given(account.getId()).willReturn(id);
+        given(loadAccountPort.loadAccount(eq(account.getId()), any(LocalDateTime.class))).willReturn(account);
 
-        List<AccountId> updatedAccountIds = accountCaptor.getAllValues().stream()
-            .map(Account::getId)
-            .collect(Collectors.toList());
+        return account;
+    }
 
-        for (AccountId accountId : accountIds) {
-            assertThat(updatedAccountIds).contains(accountId);
-        }
+    private void givenWithdrawalWillFail(Account account) {
+        given(account.withdraw(any(Money.class), any(AccountId.class))).willReturn(false);
     }
 
     private void givenDepositWillSucceed(Account account) {
         given(account.deposit(any(Money.class), any(AccountId.class)))
             .willReturn(true);
-    }
-
-    private void givenWithdrawalWillFail(Account account) {
-        given(account.withdraw(any(Money.class), any(AccountId.class))).willReturn(false);
     }
 
     private void givenWithdrawalWillSucceed(Account account) {
@@ -125,17 +124,20 @@ class SendMoneyServiceTest {
         return givenAnAccountWithId(new AccountId(41L));
     }
 
-    private Account givenAnAccountWithId(AccountId id) {
-        Account account = Mockito.mock(Account.class);
-
-        given(account.getId()).willReturn(id);
-        given(loadAccountPort.loadAccount(eq(account.getId()), any(LocalDateTime.class))).willReturn(account);
-
-        return account;
-    }
-
     private MoneyTransferProperties moneyTransferProperties() {
         return new MoneyTransferProperties(Money.of(Long.MAX_VALUE));
     }
 
+    private void thenAccountsHaveBeenUpdated(AccountId... accountIds) {
+        ArgumentCaptor<Account> accountCaptor = ArgumentCaptor.forClass(Account.class);
+        then(updateAccountStatePort).should(times(accountIds.length)).updateActivities(accountCaptor.capture());
+
+        List<AccountId> updatedAccountIds = accountCaptor.getAllValues().stream()
+            .map(Account::getId)
+            .collect(Collectors.toList());
+
+        for (AccountId accountId : accountIds) {
+            assertThat(updatedAccountIds).contains(accountId);
+        }
+    }
 }

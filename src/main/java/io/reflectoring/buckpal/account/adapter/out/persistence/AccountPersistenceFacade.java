@@ -14,11 +14,11 @@ import io.reflectoring.buckpal.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Converts domain output to database input action.
+ * Persistence facade that converts domain output to database input action.
  */
 @PersistenceAdapter
 @RequiredArgsConstructor
-class AccountPersistence implements LoadAccountPort, UpdateAccountStatePort {
+class AccountPersistenceFacade implements LoadAccountPort, UpdateAccountStatePort {
 
     private final AccountRepository accountRepository;
     private final ActivityQueryRepository activityQueryRepository;

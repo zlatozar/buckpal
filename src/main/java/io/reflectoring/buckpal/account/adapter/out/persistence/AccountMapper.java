@@ -21,6 +21,7 @@ import io.reflectoring.buckpal.account.domain.Money;
 @Component
 class AccountMapper {
 
+    // DB -> domain communication
     Account mapToDomainEntity(AccountJpaEntity account, List<ActivityJpaEntity> activities,
         Long withdrawalBalance, Long depositBalance) {
 
@@ -46,6 +47,7 @@ class AccountMapper {
         return new ActivityLedger(mappedActivities);
     }
 
+    // domain -> DB communication
     ActivityJpaEntity mapToJpaEntity(Activity activity) {
         return new ActivityJpaEntity(
             activity.getId() == null ? null : activity.getId().getValue(),
