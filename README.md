@@ -3,7 +3,15 @@
 It implements a domain-centric "Hexagonal" approach of a common web application with 
 Java and Spring Boot. 
 
+BuckPal architecture:
+
 ![BuckPal Hex Architecture](images/buckpal_arch.png)
+
+Hexagonal Architecture:
+
+![Arch](images/hexagonal_architecture.png)
+
+![Data Flow](images/data_flow.png)
 
 NOTE:
  This is the companion code to [Hexagonal Architecture for Microservices](https://confluence.neterra.paysafe.com/display/paymentnetwork/Hexagonal+Architecture+for+Microservices)
